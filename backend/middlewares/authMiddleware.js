@@ -4,7 +4,8 @@ const protect = async (req, res, next) => {
   try {
     const token = req.headers.authorization;
     if (!token) return res.status(401).status({ message: "Empty Token" });
-    const decode = JWT.verify(token, process.env.JWT_SECRET);
+    const actualToken = token.split(" ")[1];
+    const decode = JWT.verify(actualToken, process.env.JWT_SECRET);
     req.user = decode;
     next();
   } catch (err) {

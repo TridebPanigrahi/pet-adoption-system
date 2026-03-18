@@ -4,6 +4,7 @@ const cors = require("cors");
 require("dotenv").config();
 const authRoutes = require("./routes/authRoutes");
 const petRoutes = require("./routes/petRoutes");
+const adoptionRoutes = require("./routes/adoptionRoutes");
 
 const app = express();
 
@@ -18,8 +19,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
-app.use("/api/pet", petRoutes);
-
+app.use("/api/pets", petRoutes);
+app.use("/api/adoptions", adoptionRoutes);
 // Conneting DB
 
 mongoose
