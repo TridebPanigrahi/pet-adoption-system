@@ -58,9 +58,15 @@ const updateAdoption = async (req, res) => {
   }
 };
 
+const withdralApplication = async (req, res) => {
+  await Adoption.findOneAndDelete({ _id: req.params.id, user: req.user.id });
+  res.json({ message: "Withdral successfully" });
+};
+
 module.exports = {
   applyAdoption,
   myApplication,
   overallApplication,
   updateAdoption,
+  withdralApplication,
 };
