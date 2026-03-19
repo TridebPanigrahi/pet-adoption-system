@@ -6,7 +6,7 @@ const getPets = async (req, res) => {
 
     let query = {};
     if (search) {
-      query.name = { $regex: search, $option: "i" };
+      query.name = { $regex: search, $options: "i" };
     }
     if (breed) {
       query.breed = breed;
