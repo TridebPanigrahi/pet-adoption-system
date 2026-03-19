@@ -42,6 +42,9 @@ const updateAdoption = async (req, res) => {
     const adoptionId = req.params.id;
     const { status } = req.body;
     const adoptionData = await Adoption.findById(adoptionId).populate("pets");
+    if (adoptionData.status !== "pending") {
+      return res.status(400).json({ message: "Already processed" });
+    }
     adoptionData.status = status;
     await adoptionData.save();
 

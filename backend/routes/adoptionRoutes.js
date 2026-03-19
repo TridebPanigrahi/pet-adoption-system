@@ -7,7 +7,7 @@ const {
 } = require("../controllers/adoptionController");
 const { protect, isAdmin } = require("../middlewares/authMiddleware");
 
-const router = express.router();
+const router = express.Router();
 
 //for users
 router.post("/apply/:petId", protect, applyAdoption);

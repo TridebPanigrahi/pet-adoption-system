@@ -1,8 +1,35 @@
 const Pets = require("../models/Pet");
 
 const getPets = async (req, res) => {
-  const pets = await Pets.find();
-  res.status(200).json({ data: pets });
+  try {
+    const { search, breed, species, age, page = 1, limit = 5 } = req.query;
+
+    let query = {};
+    if (search) {
+      query.name = { $regex: search, $option: "i" };
+    }
+    if (breed) {
+      query.breed = breed;
+    }
+    if (species) {
+      query.species = species;
+    }
+    if (age) {
+      query.age = age;
+    }
+
+    const pets = await Pets.find(query)
+      .skip((page - 1) * limit)
+      .limit(Number(limit));
+
+    const total = await Pets.countDocuments(query);
+
+    res
+      .status(200)
+      .json({ total, page, pages: Math.ceil(total / limit), data: pets });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
 const getPetById = async (req, res) => {
@@ -11,8 +38,16 @@ const getPetById = async (req, res) => {
 };
 
 const addPet = async (req, res) => {
-  const pet = await Pets.create(req.body);
-  res.json({ message: "Pet created", data: pet });
+  try {
+    const { name, breed, species, age } = req.body;
+    if (!name || !breed || !species || !age) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+    const pet = await Pets.create(req.body);
+    res.json({ message: "Pet created", data: pet });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
 const updatePet = async (req, res) => {
