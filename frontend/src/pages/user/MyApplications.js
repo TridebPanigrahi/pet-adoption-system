@@ -1,12 +1,6 @@
 import {
   Box,
   Typography,
-  Paper,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
   Chip,
   Button,
   Card,

@@ -3,9 +3,6 @@ import {
   Container,
   Typography,
   Grid,
-  Card,
-  CardMedia,
-  CardContent,
   Button,
   TextField,
   MenuItem,
@@ -15,40 +12,9 @@ import { useEffect, useState } from "react";
 import API from "../api/axios";
 import Navbar from "../components/Navbar";
 import PetCard from "../components/PetCard";
-import heroImg from "../assets/HeroImg.png";
-import pet1 from "../assets/dog1.png";
-import pet2 from "../assets/cat1.png";
-import pet3 from "../assets/rabbit1.png";
 import rightLoginImg from "../assets/right_login_img.png";
 import loginBackground from "../assets/login_background.png";
 import { petsMasterData } from "../api/masterData";
-
-const petsData = [
-  {
-    name: "Bella",
-    breed: "Labrador Retriever",
-    age: "2 Years",
-    image: pet1,
-  },
-  {
-    name: "Mittens",
-    breed: "Domestic Shorthair",
-    age: "1 Year",
-    image: pet2,
-  },
-  {
-    name: "Max",
-    breed: "German Shepherd",
-    age: "3 Years",
-    image: pet3,
-  },
-  {
-    name: "Luna",
-    breed: "Siamese",
-    age: "8 Months",
-    image: pet1,
-  },
-];
 
 const Home = () => {
   const [pets, setPets] = useState([]);

@@ -1,20 +1,8 @@
-import {
-  Box,
-  Grid,
-  Card,
-  CardContent,
-  Typography,
-  CardMedia,
-  Button,
-  Paper,
-} from "@mui/material";
+import { Box, Grid, Card, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import API from "../../api/axios";
-import { toast } from "react-toastify";
 
 const UserDashboard = () => {
-  const [pets, setPets] = useState([]);
-
   const [stats, setStats] = useState({
     available: 0,
     applied: 0,
@@ -24,35 +12,6 @@ const UserDashboard = () => {
 
   const user = JSON.parse(localStorage.getItem("user"));
   const token = localStorage.getItem("token");
-
-  const getPets = async () => {
-    try {
-      const res = await API.get(`/pets?status=available&userId=${user._id}`);
-
-      setPets(res.data.data);
-    } catch (err) {
-      toast.error("Error loading pets");
-    }
-  };
-
-  const applyPet = async (id) => {
-    try {
-      await API.post(
-        `/adoptions/apply/${id}`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
-
-      toast.success("Application Submitted");
-
-      getPets();
-      getStats();
-    } catch (err) {
-      toast.error(err.response?.data?.message);
-    }
-  };
 
   const getStats = async () => {
     try {
@@ -78,7 +37,6 @@ const UserDashboard = () => {
   };
 
   useEffect(() => {
-    getPets();
     getStats();
   }, []);
 
