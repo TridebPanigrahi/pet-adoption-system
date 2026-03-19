@@ -1,8 +1,18 @@
 const Pets = require("../models/Pet");
+const Adoption = require("../models/Adoption");
 
 const getPets = async (req, res) => {
   try {
-    const { search, breed, species, age, page = 1, limit = 5 } = req.query;
+    const {
+      search,
+      breed,
+      species,
+      age,
+      status,
+      userId,
+      page = 1,
+      limit = 5,
+    } = req.query;
 
     let query = {};
     if (search) {
@@ -16,6 +26,17 @@ const getPets = async (req, res) => {
     }
     if (age) {
       query.age = age;
+    }
+    if (status) {
+      query.status = status;
+    }
+
+    if (userId) {
+      const applied = await Adoption.find({ user: userId }).select("pet");
+
+      const appliedPetIds = applied.map((a) => a.pet);
+
+      query._id = { $nin: appliedPetIds };
     }
 
     const pets = await Pets.find(query)
@@ -39,11 +60,18 @@ const getPetById = async (req, res) => {
 
 const addPet = async (req, res) => {
   try {
+    const imageUrl = req.file.path;
     const { name, breed, species, age } = req.body;
-    if (!name || !breed || !species || !age) {
+    if (!name || !breed || !species || !age || !imageUrl) {
       return res.status(400).json({ message: "All fields are required" });
     }
-    const pet = await Pets.create(req.body);
+    const pet = await Pets.create({
+      name,
+      breed,
+      species,
+      age,
+      image: imageUrl,
+    });
     res.json({ message: "Pet created", data: pet });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -51,9 +79,13 @@ const addPet = async (req, res) => {
 };
 
 const updatePet = async (req, res) => {
-  const pet = await Pets.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-  });
+  const imageUrl = req.file.path;
+  const { name, breed, species, age } = req.body;
+  const pet = await Pets.findByIdAndUpdate(
+    req.params.id,
+    { name, breed, species, age, image: imageUrl },
+    { returnDocument: "after" },
+  );
   res.json({ message: "Pet Updated", data: pet });
 };
 

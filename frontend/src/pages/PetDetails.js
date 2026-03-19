@@ -8,11 +8,12 @@ import {
   Paper,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import API from "../api/axios";
 import { toast } from "react-toastify";
 
 const PetDetails = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
 
   const [pet, setPet] = useState(null);
@@ -36,22 +37,22 @@ const PetDetails = () => {
     if (exist) setApplied(true);
   };
 
-  const applyPet = async () => {
-    try {
-      await API.post(
-        `/adoptions/apply/${id}`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
+  // const applyPet = async () => {
+  //   try {
+  //     await API.post(
+  //       `/adoptions/apply/${id}`,
+  //       {},
+  //       {
+  //         headers: { Authorization: `Bearer ${token}` },
+  //       },
+  //     );
 
-      toast.success("Application Submitted");
-      setApplied(true);
-    } catch (err) {
-      toast.error(err.response?.data?.message);
-    }
-  };
+  //     toast.success("Application Submitted");
+  //     setApplied(true);
+  //   } catch (err) {
+  //     toast.error(err.response?.data?.message);
+  //   }
+  // };
 
   useEffect(() => {
     getPet();
@@ -94,7 +95,7 @@ const PetDetails = () => {
                 variant="contained"
                 size="large"
                 disabled={applied || pet.status === "adopted"}
-                onClick={applyPet}
+                onClick={() => navigate("/login")}
               >
                 {applied ? "Already Applied" : "Apply for Adoption"}
               </Button>

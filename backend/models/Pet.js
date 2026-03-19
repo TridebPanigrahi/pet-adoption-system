@@ -11,6 +11,7 @@ const PetSchema = new mongoose.Schema(
       enum: ["available", "adopted"],
       default: "available",
     },
+    image: String,
   },
   {
     timestamps: true,

@@ -9,6 +9,8 @@ import PrivateRoutes from "./PrivateRoutes";
 import ManagePets from "../pages/admin/ManagePets";
 import Applications from "../pages/admin/Applications";
 import PetDetails from "../pages/PetDetails";
+import AvailablePets from "../pages/user/AvailablePets";
+import MyApplications from "../pages/user/MyApplications";
 
 function AppRoutes() {
   return (
@@ -21,6 +23,11 @@ function AppRoutes() {
         <Route element={<PrivateRoutes role="user" />}>
           <Route element={<DashboardLayout />}>
             <Route path="/user-dashboard" element={<UserDashboard />} />
+            <Route path="/user-dashboard/pets" element={<AvailablePets />} />
+            <Route
+              path="/user-dashboard/applications"
+              element={<MyApplications />}
+            />
           </Route>
         </Route>
         <Route element={<PrivateRoutes role="admin" />}>

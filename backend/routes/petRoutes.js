@@ -7,6 +7,7 @@ const {
   deletePet,
 } = require("../controllers/petController");
 const { protect, isAdmin } = require("../middlewares/authMiddleware");
+const upload = require("../middlewares/upload");
 
 const router = express.Router();
 
@@ -15,8 +16,8 @@ router.get("/", getPets);
 router.get("/:id", getPetById);
 
 //Admin Access
-router.post("/", protect, isAdmin, addPet);
-router.put("/:id", protect, isAdmin, updatePet);
+router.post("/", protect, isAdmin, upload.single("image"), addPet);
+router.put("/:id", protect, isAdmin, upload.single("image"), updatePet);
 router.delete("/:id", protect, isAdmin, deletePet);
 
 module.exports = router;

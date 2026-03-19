@@ -1,6 +1,5 @@
 const Pets = require("../models/Pet");
 const Adoption = require("../models/Adoption");
-const User = require("../models/User");
 
 const applyAdoption = async (req, res) => {
   try {

@@ -16,6 +16,7 @@ import {
   TextField,
 } from "@mui/material";
 
+import UploadIcon from "@mui/icons-material/Upload";
 import { useEffect, useState } from "react";
 import API from "../../api/axios";
 import { toast } from "react-toastify";
@@ -30,7 +31,7 @@ const schema = yup.object({
   species: yup.string().required("Species required"),
   breed: yup.string().required("Breed required"),
   age: yup.number().typeError("Age must be number").required(),
-  image: yup.string().url("Invalid URL").required(),
+  //   image: yup.string().url("Invalid URL").required(),
 });
 
 const ManagePets = () => {
@@ -60,14 +61,25 @@ const ManagePets = () => {
 
   const onSubmit = async (data) => {
     try {
+      debugger;
+      const formData = new FormData();
+
+      formData.append("name", data.name);
+      formData.append("species", data.species);
+      formData.append("age", data.age);
+      formData.append("breed", data.breed);
+      formData.append("image", data.image[0]);
+
       if (editId) {
-        await API.put(`/pets/${editId}`, data, {
+        await API.put(`/pets/${editId}`, formData, {
           headers: { Authorization: `Bearer ${token}` },
+          "Content-Type": "multipart/form-data",
         });
         toast.success("Pet Updated Successfully");
       } else {
-        await API.post("/pets", data, {
+        await API.post("/pets", formData, {
           headers: { Authorization: `Bearer ${token}` },
+          "Content-Type": "multipart/form-data",
         });
         toast.success("Pet Added Successfully");
       }
@@ -193,12 +205,18 @@ const ManagePets = () => {
               helperText={errors.age?.message}
             />
 
-            <TextField
-              label="Image URL"
-              {...register("image")}
-              error={!!errors.image}
-              helperText={errors.image?.message}
-            />
+            <Button variant="contained" component="label" fullWidth>
+              Upload Image
+              <input
+                type="file"
+                hidden
+                accept="image/*"
+                {...register("image", { required: "Image required" })}
+              />
+            </Button>
+            <Typography variant="caption" color="error">
+              {errors.image?.message}
+            </Typography>
           </DialogContent>
 
           <DialogActions>

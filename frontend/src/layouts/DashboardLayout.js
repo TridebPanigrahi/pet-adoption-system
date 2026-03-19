@@ -21,7 +21,8 @@ const DashboardLayout = () => {
           { name: "Applications", path: "/admin-dashboard/applications" },
         ]
       : [
-          { name: "Available Pets", path: "/user-dashboard" },
+          { name: "Dashboard", path: "/user-dashboard" },
+          { name: "Available Pets", path: "/user-dashboard/pets" },
           { name: "My Applications", path: "/user-dashboard/applications" },
         ];
 
