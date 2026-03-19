@@ -26,14 +26,15 @@ const applyAdoption = async (req, res) => {
 
 const myApplication = async (req, res) => {
   const userId = req.user.id;
-  const myAdoption = await Adoption.find({ user: userId }).populate(
-    "users pets",
-  );
+  const myAdoption = await Adoption.find({ user: userId }).populate([
+    "user",
+    "pet",
+  ]);
   res.json({ data: myAdoption });
 };
 
 const overallApplication = async (req, res) => {
-  const overallAdoption = await Adoption.find().populate("users pets");
+  const overallAdoption = await Adoption.find().populate(["user", "pet"]);
   res.json({ data: overallAdoption });
 };
 
@@ -41,7 +42,7 @@ const updateAdoption = async (req, res) => {
   try {
     const adoptionId = req.params.id;
     const { status } = req.body;
-    const adoptionData = await Adoption.findById(adoptionId).populate("pets");
+    const adoptionData = await Adoption.findById(adoptionId).populate(["pet"]);
     if (adoptionData.status !== "pending") {
       return res.status(400).json({ message: "Already processed" });
     }
