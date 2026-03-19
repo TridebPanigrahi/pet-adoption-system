@@ -24,9 +24,14 @@ const Login = () => {
       localStorage.setItem("token", res.data.token);
 
       toast.success("Login Successful 🎉");
-
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
       setTimeout(() => {
-        navigate("/");
+        if (res.data.user.role === "admin") {
+          navigate("/admin-dashboard");
+        } else {
+          navigate("/user-dashboard");
+        }
       }, 1500);
     } catch (err) {
       toast.error(err.response?.data?.message || "Login Failed");
