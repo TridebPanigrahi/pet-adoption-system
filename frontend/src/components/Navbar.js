@@ -14,9 +14,6 @@ export default function Navbar() {
           <Button onClick={() => navigate("/")} color="primary">
             Home
           </Button>
-          <Button color="primary" onClick={() => navigate("/about")}>
-            About
-          </Button>
           <Button color="primary" onClick={() => navigate("/login")}>
             Login
           </Button>
